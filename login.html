@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f2">
+    <title>Sign in | Stūdent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --ink:#19332e; --muted:#71817b; --sage:#dce8df; --leaf:#2c6958; --deep:#205044; --cream:#f5f7f2; --line:#dce4de; }
+        * { box-sizing:border-box; }
+        body { margin:0; min-height:100vh; color:var(--ink); background:var(--cream); font-family:'DM Sans',sans-serif; }
+        .page { min-height:100vh; display:grid; grid-template-columns:minmax(360px,.92fr) minmax(500px,1.08fr); }
+        .welcome { position:relative; display:flex; flex-direction:column; justify-content:space-between; min-height:100vh; padding:42px 9vw 38px; overflow:hidden; background:var(--sage); }
+        .welcome:before,.welcome:after { content:''; position:absolute; border:1px solid rgba(44,105,88,.14); border-radius:50%; pointer-events:none; }
+        .welcome:before { width:430px; height:430px; right:-215px; top:22%; } .welcome:after { width:610px; height:610px; right:-305px; top:13%; }
+        .brand,.copy,.footer { position:relative; z-index:1; } .brand { display:flex; align-items:center; gap:11px; width:max-content; font-weight:700; font-size:17px; letter-spacing:.02em; }
+        .mark { display:grid; place-items:center; width:35px; height:35px; color:#fff; background:var(--leaf); border-radius:11px 11px 11px 3px; box-shadow:0 5px 12px rgba(32,80,68,.16); }
+        .mark svg { width:19px; } .copy { max-width:470px; margin:auto 0; padding:54px 0; }
+        .eyebrow { margin:0 0 19px; color:var(--leaf); font-size:11px; font-weight:700; letter-spacing:.17em; text-transform:uppercase; }
+        h1,h2 { font-family:'Playfair Display',Georgia,serif; letter-spacing:-.03em; } h1 { max-width:440px; margin:0; font-size:clamp(42px,4.7vw,70px); line-height:1.03; }
+        .copy p:last-child { max-width:365px; margin:25px 0 0; color:#59736a; font-size:16px; line-height:1.65; }
+        .footer { display:flex; align-items:center; gap:10px; color:#648078; font-size:12px; } .dot { width:7px; height:7px; background:#3b9a72; border-radius:50%; }
+        .login { display:grid; place-items:center; padding:42px 8vw; background:#fff; } .card { width:min(100%,410px); animation:rise .65s ease both; }
+        h2 { margin:0 0 10px; font-size:36px; line-height:1.1; } .intro { margin:0 0 36px; color:var(--muted); font-size:14px; }
+        .field { margin-bottom:21px; } label { display:block; margin-bottom:9px; color:#39564d; font-size:12px; font-weight:700; letter-spacing:.03em; }
+        .input-wrap { position:relative; } input[type=email],input[type=password],input[type=text] { width:100%; height:52px; padding:0 16px; border:1px solid var(--line); border-radius:8px; outline:0; color:var(--ink); background:#fbfcfa; font:inherit; font-size:14px; transition:.18s; }
+        input:focus { border-color:var(--leaf); background:#fff; box-shadow:0 0 0 4px rgba(44,105,88,.1); } .password { padding-right:50px!important; }
+        .toggle { position:absolute; top:50%; right:13px; display:grid; place-items:center; width:30px; height:30px; padding:0; border:0; color:#7c9189; background:transparent; cursor:pointer; transform:translateY(-50%); } .toggle svg { width:18px; }
+        .options { display:flex; align-items:center; justify-content:space-between; margin:4px 0 28px; font-size:12px; } .remember { display:flex; align-items:center; gap:8px; color:var(--muted); cursor:pointer; } .remember input { accent-color:var(--leaf); }
+        a { color:var(--leaf); font-weight:700; text-decoration:none; } a:hover { text-decoration:underline; }
+        .submit { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; height:52px; border:0; border-radius:8px; color:#fff; background:var(--deep); font:inherit; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(32,80,68,.16); transition:.18s; } .submit:hover { background:#173f35; transform:translateY(-1px); }
+        .submit svg { width:17px; } .message { min-height:18px; margin:15px 0 0; color:var(--leaf); font-size:12px; text-align:center; } .support { margin-top:29px; color:var(--muted); font-size:12px; text-align:center; }
+        @keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        @media(max-width:800px) { .page { grid-template-columns:1fr; } .welcome { min-height:330px; padding:27px 8vw; } .copy { margin:0; padding:34px 0 22px; } h1 { font-size:46px; } .copy p:last-child { margin-top:14px; font-size:14px; line-height:1.5; } .footer { display:none; } .login { padding:48px 8vw 60px; } }
+        @media(max-width:420px) { .welcome { min-height:300px; } h1 { font-size:40px; } h2 { font-size:32px; } }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="welcome" aria-label="Welcome">
+            <div class="brand"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5 12 3l8 3.5L12 10 4 6.5Z"/><path d="M7 8v5.2c0 1.1 2.2 2.8 5 2.8s5-1.7 5-2.8V8M20 7v6"/></svg></span>Stūdent</div>
+            <div class="copy"><p class="eyebrow">Student management system</p><h1>Make every student journey count.</h1><p>One thoughtful workspace for the people, progress, and possibilities that shape your campus.</p></div>
+            <div class="footer"><span class="dot"></span>Your campus workspace, all in one place</div>
+        </section>
+        <section class="login" aria-label="Sign in">
+            <div class="card"><h2>Welcome back</h2><p class="intro">Sign in to continue to your dashboard.</p>
+                <form id="login-form">
+                    <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@university.edu" required></div>
+                    <div class="field"><label for="password">Password</label><div class="input-wrap"><input class="password" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="toggle" id="toggle" type="button" aria-label="Show password"><svg id="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></button></div></div>
+                    <div class="options"><label class="remember"><input type="checkbox" name="remember"><span>Keep me signed in</span></label><a href="#">Forgot password?</a></div>
+                    <button class="submit" type="submit">Sign in <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><p class="message" id="message" role="status" aria-live="polite"></p>
+                </form><p class="support">Need help signing in? <a href="mailto:support@student.edu">Contact support</a></p>
+            </div>
+        </section>
+    </main>
+    <script>
+        const password = document.getElementById('password');
+        const toggle = document.getElementById('toggle');
+        const eye = document.getElementById('eye');
+        toggle.addEventListener('click', () => { const shown = password.type === 'password'; password.type = shown ? 'text' : 'password'; toggle.setAttribute('aria-label', shown ? 'Hide password' : 'Show password'); eye.innerHTML = shown ? '<path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a17.6 17.6 0 0 1-3.1 3.9M6.2 6.2C3.7 7.8 2.5 12 2.5 12s3.5 6 9.5 6c1.1 0 2.1-.2 3-.5"/>' : '<path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/>'; });
+        document.getElementById('login-form').addEventListener('submit', event => { event.preventDefault(); document.getElementById('message').textContent = 'Thanks. Your sign-in details are ready to be verified.'; });
+    </script>
+</body>
+</html>
