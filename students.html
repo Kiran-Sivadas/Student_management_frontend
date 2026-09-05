@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f2">
+    <title>Students | Stūdent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink:#19332e;
+            --muted:#71817b;
+            --sage:#dce8df;
+            --leaf:#2c6958;
+            --deep:#205044;
+            --cream:#f5f7f2;
+            --line:#dce4de;
+            --white:#fff;
+        }
+
+        * {
+            box-sizing:border-box;
+        }
+
+        body {
+            margin:0;
+            color:var(--ink);
+            background:var(--cream);
+            font-family:'DM Sans',sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font:inherit;
+        }
+
+        button {
+            cursor:pointer;
+        }
+
+        .shell {
+            display:grid;
+            grid-template-columns:238px minmax(0,1fr);
+            min-height:100vh;
+        }
+
+        .sidebar {
+            display:flex;
+            flex-direction:column;
+            padding:26px 16px 22px;
+            color:#e9f1eb;
+            background:#193a32;
+        }
+
+        .brand {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin:0 10px 54px;
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .mark {
+            display:grid;
+            place-items:center;
+            width:34px;
+            height:34px;
+            color:#fff;
+            background:#3d9075;
+            border-radius:11px 11px 11px 3px;
+        }
+
+        .mark svg {
+            width:18px;
+        }
+
+        .nav {
+            display:grid;
+            gap:7px;
+        }
+
+        .nav a {
+            display:flex;
+            align-items:center;
+            gap:13px;
+            min-height:45px;
+            padding:0 13px;
+            color:#aec4ba;
+            border-radius:8px;
+            font-size:13px;
+            font-weight:600;
+            text-decoration:none;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color:#fff;
+            background:#2c6958;
+        }
+
+        .nav svg {
+            width:18px;
+        }
+
+        .sidebar-foot {
+            margin-top:auto;
+        }
+
+        .logout {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:0 13px;
+            color:#aec4ba;
+            font-size:13px;
+            text-decoration:none;
+        }
+
+        .workspace {
+            min-width:0;
+        }
+
+        .topbar {
+            display:flex;
+            align-items:center;
+            gap:25px;
+            min-height:72px;
+            padding:0 34px;
+            background:#fff;
+            border-bottom:1px solid #edf1ed;
+        }
+
+        .global-search {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            width:min(450px,60%);
+            height:38px;
+            padding:0 13px;
+            color:#9aa8a2;
+            background:#f4f6f4;
+            border-radius:7px;
+        }
+
+        .global-search input {
+            width:100%;
+            border:0;
+            outline:0;
+            background:transparent;
+            color:var(--ink);
+            font-size:12px;
+        }
+
+        .top-actions {
+            display:flex;
+            align-items:center;
+            gap:20px;
+            margin-left:auto;
+        }
+
+        .avatar {
+            display:grid;
+            place-items:center;
+            width:30px;
+            height:30px;
+            color:#fff;
+            background:var(--leaf);
+            border-radius:50%;
+            font-size:12px;
+        }
+
+        .profile {
+            display:flex;
+            align-items:center;
+            gap:9px;
+            font-size:12px;
+            font-weight:600;
+        }
+
+        .content {
+            max-width:1520px;
+            margin:auto;
+            padding:32px 34px;
+        }
+
+        .heading {
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            margin-bottom:24px;
+        }
+
+        h1,
+        h2 {
+            font-family:'Playfair Display',Georgia,serif;
+            letter-spacing:-.03em;
+        }
+
+        h1 {
+            margin:0 0 6px;
+            font-size:31px;
+        }
+
+        .heading p {
+            margin:0;
+            color:var(--muted);
+            font-size:13px;
+        }
+
+        .panel {
+            padding:20px 17px;
+            border:1px solid #edf1ed;
+            border-radius:8px;
+            background:#fff;
+            box-shadow:0 5px 18px rgba(25,51,46,.025);
+        }
+
+        .panel-head {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:18px;
+        }
+
+        h2 {
+            margin:0;
+            font-size:20px;
+        }
+
+        .primary {
+            height:36px;
+            padding:0 14px;
+            border:0;
+            border-radius:6px;
+            color:#fff;
+            background:var(--deep);
+            font-size:12px;
+            font-weight:700;
+        }
+
+        .primary:hover {
+            background:#173f35;
+        }
+
+        .toolbar {
+            display:flex;
+            justify-content:space-between;
+            gap:12px;
+            margin-bottom:15px;
+        }
+
+        .search-box {
+            display:flex;
+            align-items:center;
+            width:350px;
+            max-width:100%;
+            height:36px;
+            padding:0 12px;
+            border:1px solid var(--line);
+            border-radius:6px;
+        }
+
+        .search-box input {
+            width:100%;
+            border:0;
+            outline:0;
+            font-size:12px;
+        }
+
+        select {
+            height:36px;
+            padding:0 12px;
+            border:1px solid var(--line);
+            border-radius:6px;
+            background:#fff;
+            color:var(--muted);
+            font-size:12px;
+        }
+
+        .table-wrap {
+            overflow:auto;
+        }
+
+        table {
+            width:100%;
+            min-width:700px;
+            border-collapse:collapse;
+            font-size:11px;
+        }
+
+        th {
+            padding:12px 10px;
+            background:#f4f7f4;
+            color:#657870;
+            text-align:left;
+            font-size:10px;
+        }
+
+        td {
+            padding:14px 10px;
+            border-bottom:1px solid #eef2ee;
+        }
+
+        tbody tr:hover {
+            background:#fbfcfa;
+        }
+
+        .status {
+            display:inline-flex;
+            padding:5px 9px;
+            border-radius:15px;
+            font-size:10px;
+            font-weight:700;
+        }
+
+        .active-status {
+            color:#28714f;
+            background:#dff3e7;
+        }
+
+        .inactive-status {
+            color:#a8504a;
+            background:#f9e2e0;
+        }
+
+        .actions {
+            display:flex;
+            gap:7px;
+        }
+
+        .actions button {
+            padding:6px 9px;
+            border:0;
+            border-radius:5px;
+            color:var(--leaf);
+            background:#edf5f0;
+            font-size:10px;
+        }
+
+        .actions button:last-child {
+            color:#a8504a;
+            background:#f9e2e0;
+        }
+
+        .footer {
+            display:flex;
+            justify-content:space-between;
+            padding-top:24px;
+            color:var(--muted);
+            font-size:11px;
+        }
+
+        @media(max-width:700px) {
+            .shell {
+                display:block;
+            }
+
+            .sidebar {
+                min-height:auto;
+            }
+
+            .topbar {
+                padding:0 18px;
+            }
+
+            .content {
+                padding:25px 18px;
+            }
+
+            .heading {
+                display:block;
+            }
+
+            .toolbar {
+                display:block;
+            }
+
+            .search-box {
+                width:100%;
+                margin-bottom:8px;
+            }
+
+            select {
+                width:100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="shell">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="mark">S</span>
+            <span>Stūdent</span>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html">
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="active" href="students.html">
+                <span>♙</span>
+                <span>Students</span>
+            </a>
+
+            <a href="#reports">
+                <span>▥</span>
+                <span>Reports</span>
+            </a>
+
+            <a href="settings.html">
+                <span>⚙</span>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-foot">
+            <a class="logout" href="login.html">
+                <span>↪</span>
+                <span>Log out</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <div class="workspace">
+
+        <header class="topbar">
+
+            <label class="global-search">
+                🔍
+                <input type="search" placeholder="Search students...">
+            </label>
+
+            <div class="top-actions">
+                <div class="profile">
+                    <span class="avatar">A</span>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+        </header>
+
+        <main class="content">
+
+            <section class="heading">
+
+                <div>
+                    <h1>Students</h1>
+                    <p>Manage student records and information.</p>
+                </div>
+
+            </section>
+
+            <section class="panel">
+
+                <div class="panel-head">
+                    <h2>Student Records</h2>
+
+                    <button class="primary" onclick="addStudent()">
+                        + Add Student
+                    </button>
+                </div>
+
+                <div class="toolbar">
+
+                    <label class="search-box">
+                        🔍
+                        <input
+                            id="studentSearch"
+                            type="search"
+                            placeholder="Search by name, ID or course..."
+                        >
+                    </label>
+
+                    <select id="statusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentRows">
+
+                            <tr data-status="active">
+                                <td>S001</td>
+                                <td>Aarav Sharma</td>
+                                <td>Computer Science</td>
+                                <td>aarav@example.com</td>
+                                <td>
+                                    <span class="status active-status">Active</span>
+                                </td>
+                                <td class="actions">
+                                    <button onclick="viewStudent('Aarav Sharma')">View</button>
+                                    <button onclick="editStudent('Aarav Sharma')">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr data-status="active">
+                                <td>S002</td>
+                                <td>Diya Patel</td>
+                                <td>Information Technology</td>
+                                <td>diya@example.com</td>
+                                <td>
+                                    <span class="status active-status">Active</span>
+                                </td>
+                                <td class="actions">
+                                    <button onclick="viewStudent('Diya Patel')">View</button>
+                                    <button onclick="editStudent('Diya Patel')">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr data-status="active">
+                                <td>S003</td>
+                                <td>Rohan Mehta</td>
+                                <td>Electronics</td>
+                                <td>rohan@example.com</td>
+                                <td>
+                                    <span class="status active-status">Active</span>
+                                </td>
+                                <td class="actions">
+                                    <button onclick="viewStudent('Rohan Mehta')">View</button>
+                                    <button onclick="editStudent('Rohan Mehta')">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr data-status="inactive">
+                                <td>S004</td>
+                                <td>Sneha Iyer</td>
+                                <td>Computer Science</td>
+                                <td>sneha@example.com</td>
+                                <td>
+                                    <span class="status inactive-status">Inactive</span>
+                                </td>
+                                <td class="actions">
+                                    <button onclick="viewStudent('Sneha Iyer')">View</button>
+                                    <button onclick="editStudent('Sneha Iyer')">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr data-status="active">
+                                <td>S005</td>
+                                <td>Karan Verma</td>
+                                <td>Mechanical Engineering</td>
+                                <td>karan@example.com</td>
+                                <td>
+                                    <span class="status active-status">Active</span>
+                                </td>
+                                <td class="actions">
+                                    <button onclick="viewStudent('Karan Verma')">View</button>
+                                    <button onclick="editStudent('Karan Verma')">Edit</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <footer class="footer">
+                <span>© 2024 Student Management System. All rights reserved.</span>
+                <span>Version 1.0</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script>
+
+const searchInput = document.getElementById("studentSearch");
+const statusFilter = document.getElementById("statusFilter");
+const rows = document.querySelectorAll("#studentRows tr");
+
+function filterStudents() {
+
+    const searchText = searchInput.value.toLowerCase();
+    const selectedStatus = statusFilter.value;
+
+    rows.forEach(row => {
+
+        const text = row.textContent.toLowerCase();
+        const status = row.dataset.status;
+
+        const matchesSearch = text.includes(searchText);
+        const matchesStatus =
+            selectedStatus === "all" ||
+            selectedStatus === status;
+
+        row.style.display =
+            matchesSearch && matchesStatus ? "" : "none";
+
+    });
+}
+
+searchInput.addEventListener("input", filterStudents);
+statusFilter.addEventListener("change", filterStudents);
+
+function addStudent() {
+    alert("Add Student form will be connected here.");
+}
+
+function viewStudent(name) {
+    alert("Viewing student: " + name);
+}
+
+function editStudent(name) {
+    alert("Editing student: " + name);
+}
+
+</script>
+
+</body>
+</html>
