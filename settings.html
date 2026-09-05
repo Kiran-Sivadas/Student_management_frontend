@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f2">
+    <title>Settings | Stūdent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink:#19332e;
+            --muted:#71817b;
+            --sage:#dce8df;
+            --leaf:#2c6958;
+            --deep:#205044;
+            --cream:#f5f7f2;
+            --line:#dce4de;
+            --white:#fff;
+        }
+
+        * {
+            box-sizing:border-box;
+        }
+
+        body {
+            margin:0;
+            color:var(--ink);
+            background:var(--cream);
+            font-family:'DM Sans',sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font:inherit;
+        }
+
+        button {
+            cursor:pointer;
+        }
+
+        .shell {
+            display:grid;
+            grid-template-columns:238px minmax(0,1fr);
+            min-height:100vh;
+        }
+
+        .sidebar {
+            display:flex;
+            flex-direction:column;
+            padding:26px 16px 22px;
+            color:#e9f1eb;
+            background:#193a32;
+        }
+
+        .brand {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin:0 10px 54px;
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .mark {
+            display:grid;
+            place-items:center;
+            width:34px;
+            height:34px;
+            color:#fff;
+            background:#3d9075;
+            border-radius:11px 11px 11px 3px;
+        }
+
+        .nav {
+            display:grid;
+            gap:7px;
+        }
+
+        .nav a {
+            display:flex;
+            align-items:center;
+            gap:13px;
+            min-height:45px;
+            padding:0 13px;
+            color:#aec4ba;
+            border-radius:8px;
+            font-size:13px;
+            font-weight:600;
+            text-decoration:none;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color:#fff;
+            background:#2c6958;
+        }
+
+        .sidebar-foot {
+            margin-top:auto;
+        }
+
+        .logout {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:0 13px;
+            color:#aec4ba;
+            font-size:13px;
+            text-decoration:none;
+        }
+
+        .workspace {
+            min-width:0;
+        }
+
+        .topbar {
+            display:flex;
+            align-items:center;
+            min-height:72px;
+            padding:0 34px;
+            background:#fff;
+            border-bottom:1px solid #edf1ed;
+        }
+
+        .global-search {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            width:min(450px,60%);
+            height:38px;
+            padding:0 13px;
+            color:#9aa8a2;
+            background:#f4f6f4;
+            border-radius:7px;
+        }
+
+        .global-search input {
+            width:100%;
+            border:0;
+            outline:0;
+            background:transparent;
+            color:var(--ink);
+            font-size:12px;
+        }
+
+        .top-actions {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-left:auto;
+        }
+
+        .avatar {
+            display:grid;
+            place-items:center;
+            width:30px;
+            height:30px;
+            color:#fff;
+            background:var(--leaf);
+            border-radius:50%;
+            font-size:12px;
+        }
+
+        .profile {
+            display:flex;
+            align-items:center;
+            gap:9px;
+            font-size:12px;
+            font-weight:600;
+        }
+
+        .content {
+            max-width:1200px;
+            margin:auto;
+            padding:32px 34px;
+        }
+
+        .heading {
+            margin-bottom:24px;
+        }
+
+        h1,
+        h2 {
+            font-family:'Playfair Display',Georgia,serif;
+            letter-spacing:-.03em;
+        }
+
+        h1 {
+            margin:0 0 6px;
+            font-size:31px;
+        }
+
+        .heading p {
+            margin:0;
+            color:var(--muted);
+            font-size:13px;
+        }
+
+        .settings-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:18px;
+        }
+
+        .panel {
+            padding:22px;
+            border:1px solid #edf1ed;
+            border-radius:8px;
+            background:#fff;
+            box-shadow:0 5px 18px rgba(25,51,46,.025);
+        }
+
+        .panel.full {
+            grid-column:1 / -1;
+        }
+
+        h2 {
+            margin:0 0 5px;
+            font-size:20px;
+        }
+
+        .panel-description {
+            margin:0 0 20px;
+            color:var(--muted);
+            font-size:12px;
+        }
+
+        .field {
+            margin-bottom:16px;
+        }
+
+        label {
+            display:block;
+            margin-bottom:7px;
+            color:#39564d;
+            font-size:11px;
+            font-weight:700;
+        }
+
+        input,
+        select {
+            width:100%;
+            height:40px;
+            padding:0 12px;
+            border:1px solid var(--line);
+            border-radius:6px;
+            outline:none;
+            color:var(--ink);
+            background:#fbfcfa;
+            font-size:12px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color:var(--leaf);
+            box-shadow:0 0 0 3px rgba(44,105,88,.1);
+            background:#fff;
+        }
+
+        .row {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:14px;
+        }
+
+        .option {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:14px 0;
+            border-bottom:1px solid #eef2ee;
+        }
+
+        .option:last-child {
+            border-bottom:0;
+        }
+
+        .option-text strong {
+            display:block;
+            margin-bottom:3px;
+            font-size:12px;
+        }
+
+        .option-text span {
+            color:var(--muted);
+            font-size:10px;
+        }
+
+        .toggle {
+            position:relative;
+            width:40px;
+            height:22px;
+        }
+
+        .toggle input {
+            display:none;
+        }
+
+        .slider {
+            position:absolute;
+            inset:0;
+            border-radius:20px;
+            background:#ccd8d2;
+            transition:.2s;
+        }
+
+        .slider:before {
+            content:"";
+            position:absolute;
+            width:16px;
+            height:16px;
+            left:3px;
+            top:3px;
+            border-radius:50%;
+            background:#fff;
+            transition:.2s;
+        }
+
+        .toggle input:checked + .slider {
+            background:var(--leaf);
+        }
+
+        .toggle input:checked + .slider:before {
+            transform:translateX(18px);
+        }
+
+        .actions {
+            display:flex;
+            justify-content:flex-end;
+            gap:10px;
+            margin-top:20px;
+        }
+
+        .secondary,
+        .primary {
+            height:38px;
+            padding:0 15px;
+            border-radius:6px;
+            font-size:12px;
+            font-weight:700;
+        }
+
+        .secondary {
+            border:1px solid var(--line);
+            color:var(--muted);
+            background:#fff;
+        }
+
+        .primary {
+            border:0;
+            color:#fff;
+            background:var(--deep);
+        }
+
+        .primary:hover {
+            background:#173f35;
+        }
+
+        .message {
+            margin-top:12px;
+            color:var(--leaf);
+            font-size:11px;
+            text-align:right;
+        }
+
+        .footer {
+            display:flex;
+            justify-content:space-between;
+            padding-top:24px;
+            color:var(--muted);
+            font-size:11px;
+        }
+
+        @media(max-width:800px) {
+            .shell {
+                display:block;
+            }
+
+            .settings-grid {
+                grid-template-columns:1fr;
+            }
+
+            .panel.full {
+                grid-column:auto;
+            }
+
+            .row {
+                grid-template-columns:1fr;
+            }
+
+            .sidebar {
+                min-height:auto;
+            }
+
+            .content {
+                padding:25px 18px;
+            }
+
+            .topbar {
+                padding:0 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="shell">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="mark">S</span>
+            <span>Stūdent</span>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html">
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="students.html">
+                <span>♙</span>
+                <span>Students</span>
+            </a>
+
+            <a href="#reports">
+                <span>▥</span>
+                <span>Reports</span>
+            </a>
+
+            <a class="active" href="settings.html">
+                <span>⚙</span>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-foot">
+            <a class="logout" href="login.html">
+                <span>↪</span>
+                <span>Log out</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <div class="workspace">
+
+        <header class="topbar">
+
+            <label class="global-search">
+                🔍
+                <input type="search" placeholder="Search settings...">
+            </label>
+
+            <div class="top-actions">
+                <div class="profile">
+                    <span class="avatar">A</span>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+        </header>
+
+        <main class="content">
+
+            <section class="heading">
+                <h1>Settings</h1>
+                <p>Manage your account and application preferences.</p>
+            </section>
+
+            <div class="settings-grid">
+
+                <section class="panel">
+
+                    <h2>Profile Information</h2>
+                    <p class="panel-description">
+                        Update your account information.
+                    </p>
+
+                    <div class="row">
+
+                        <div class="field">
+                            <label for="name">Full Name</label>
+                            <input id="name" type="text" value="Admin">
+                        </div>
+
+                        <div class="field">
+                            <label for="role">Role</label>
+                            <input id="role" type="text" value="Administrator" disabled>
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email Address</label>
+                        <input id="email" type="email" value="admin@student.edu">
+                    </div>
+
+                </section>
+
+                <section class="panel">
+
+                    <h2>Change Password</h2>
+                    <p class="panel-description">
+                        Keep your account secure with a strong password.
+                    </p>
+
+                    <div class="field">
+                        <label for="currentPassword">Current Password</label>
+                        <input id="currentPassword" type="password"
+                               placeholder="Enter current password">
+                    </div>
+
+                    <div class="field">
+                        <label for="newPassword">New Password</label>
+                        <input id="newPassword" type="password"
+                               placeholder="Enter new password">
+                    </div>
+
+                    <div class="field">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input id="confirmPassword" type="password"
+                               placeholder="Confirm new password">
+                    </div>
+
+                </section>
+
+                <section class="panel">
+
+                    <h2>Notifications</h2>
+                    <p class="panel-description">
+                        Choose which notifications you want to receive.
+                    </p>
+
+                    <div class="option">
+                        <div class="option-text">
+                            <strong>Email Notifications</strong>
+                            <span>Receive important updates by email.</span>
+                        </div>
+
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-text">
+                            <strong>New Student Alerts</strong>
+                            <span>Get notified when a new student is added.</span>
+                        </div>
+
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-text">
+                            <strong>Report Notifications</strong>
+                            <span>Receive updates when reports are generated.</span>
+                        </div>
+
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                </section>
+
+                <section class="panel">
+
+                    <h2>Appearance</h2>
+                    <p class="panel-description">
+                        Customize the appearance of the application.
+                    </p>
+
+                    <div class="field">
+                        <label for="theme">Theme</label>
+
+                        <select id="theme">
+                            <option>Light</option>
+                            <option>System Default</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="language">Language</label>
+
+                        <select id="language">
+                            <option>English</option>
+                        </select>
+                    </div>
+
+                </section>
+
+            </div>
+
+            <div class="actions">
+                <button class="secondary" onclick="resetSettings()">
+                    Cancel
+                </button>
+
+                <button class="primary" onclick="saveSettings()">
+                    Save Changes
+                </button>
+            </div>
+
+            <p class="message" id="message"></p>
+
+            <footer class="footer">
+                <span>© 2024 Student Management System. All rights reserved.</span>
+                <span>Version 1.0</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script>
+
+function saveSettings() {
+
+    const message = document.getElementById("message");
+
+    message.textContent =
+        "Your settings have been saved successfully.";
+
+}
+
+function resetSettings() {
+
+    document.getElementById("message").textContent =
+        "Changes have been cancelled.";
+
+}
+
+</script>
+
+</body>
+</html>
