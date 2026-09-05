@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f2">
+
+    <title>Reports | Stūdent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --ink:#19332e;
+            --muted:#71817b;
+            --sage:#dce8df;
+            --leaf:#2c6958;
+            --deep:#205044;
+            --cream:#f5f7f2;
+            --line:#dce4de;
+            --white:#fff;
+        }
+
+        * {
+            box-sizing:border-box;
+        }
+
+        body {
+            margin:0;
+            color:var(--ink);
+            background:var(--cream);
+            font-family:'DM Sans',sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font:inherit;
+        }
+
+        button {
+            cursor:pointer;
+        }
+
+        .shell {
+            display:grid;
+            grid-template-columns:238px minmax(0,1fr);
+            min-height:100vh;
+        }
+
+        .sidebar {
+            display:flex;
+            flex-direction:column;
+            padding:26px 16px 22px;
+            color:#e9f1eb;
+            background:#193a32;
+        }
+
+        .brand {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin:0 10px 54px;
+            font-size:16px;
+            font-weight:700;
+        }
+
+        .mark {
+            display:grid;
+            place-items:center;
+            width:34px;
+            height:34px;
+            color:#fff;
+            background:#3d9075;
+            border-radius:11px 11px 11px 3px;
+        }
+
+        .nav {
+            display:grid;
+            gap:7px;
+        }
+
+        .nav a {
+            display:flex;
+            align-items:center;
+            gap:13px;
+            min-height:45px;
+            padding:0 13px;
+            color:#aec4ba;
+            border-radius:8px;
+            font-size:13px;
+            font-weight:600;
+            text-decoration:none;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            color:#fff;
+            background:#2c6958;
+        }
+
+        .sidebar-foot {
+            margin-top:auto;
+        }
+
+        .logout {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:0 13px;
+            color:#aec4ba;
+            font-size:13px;
+            text-decoration:none;
+        }
+
+        .workspace {
+            min-width:0;
+        }
+
+        .topbar {
+            display:flex;
+            align-items:center;
+            min-height:72px;
+            padding:0 34px;
+            background:#fff;
+            border-bottom:1px solid #edf1ed;
+        }
+
+        .global-search {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            width:min(450px,60%);
+            height:38px;
+            padding:0 13px;
+            color:#9aa8a2;
+            background:#f4f6f4;
+            border-radius:7px;
+        }
+
+        .global-search input {
+            width:100%;
+            border:0;
+            outline:0;
+            background:transparent;
+            color:var(--ink);
+            font-size:12px;
+        }
+
+        .top-actions {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-left:auto;
+        }
+
+        .avatar {
+            display:grid;
+            place-items:center;
+            width:30px;
+            height:30px;
+            color:#fff;
+            background:var(--leaf);
+            border-radius:50%;
+            font-size:12px;
+        }
+
+        .profile {
+            display:flex;
+            align-items:center;
+            gap:9px;
+            font-size:12px;
+            font-weight:600;
+        }
+
+        .content {
+            max-width:1400px;
+            margin:auto;
+            padding:32px 34px;
+        }
+
+        .heading {
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            margin-bottom:24px;
+        }
+
+        h1,
+        h2 {
+            font-family:'Playfair Display',Georgia,serif;
+            letter-spacing:-.03em;
+        }
+
+        h1 {
+            margin:0 0 6px;
+            font-size:31px;
+        }
+
+        .heading p {
+            margin:0;
+            color:var(--muted);
+            font-size:13px;
+        }
+
+        .heading-date {
+            color:var(--muted);
+            font-size:11px;
+        }
+
+        .stats {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:18px;
+            margin-bottom:18px;
+        }
+
+        .stat-card {
+            display:flex;
+            align-items:center;
+            gap:18px;
+            min-height:122px;
+            padding:22px 24px;
+            border-radius:11px;
+        }
+
+        .stat-card.total {
+            background:#dcecf3;
+        }
+
+        .stat-card.active {
+            background:#def1e5;
+        }
+
+        .stat-card.new {
+            background:#f7edc8;
+        }
+
+        .stat-card.inactive {
+            background:#f4dddd;
+        }
+
+        .stat-icon {
+            display:grid;
+            place-items:center;
+            width:46px;
+            height:46px;
+            flex-shrink:0;
+            color:var(--leaf);
+            background:rgba(255,255,255,.55);
+            border-radius:50%;
+            font-size:19px;
+        }
+
+        .stat-info strong {
+            display:block;
+            font-size:29px;
+            line-height:1;
+        }
+
+        .stat-info span {
+            display:block;
+            margin-top:8px;
+            color:#63756e;
+            font-size:13px;
+        }
+
+        .panel {
+            margin-bottom:18px;
+            padding:22px;
+            border:1px solid #edf1ed;
+            border-radius:8px;
+            background:#fff;
+            box-shadow:0 5px 18px rgba(25,51,46,.025);
+        }
+
+        .panel-head {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            margin-bottom:18px;
+        }
+
+        h2 {
+            margin:0 0 5px;
+            font-size:20px;
+        }
+
+        .panel-description {
+            margin:0;
+            color:var(--muted);
+            font-size:12px;
+        }
+
+        .controls {
+            display:flex;
+            align-items:center;
+            gap:9px;
+        }
+
+        select,
+        .table-search {
+            height:38px;
+            padding:0 11px;
+            border:1px solid var(--line);
+            border-radius:6px;
+            outline:none;
+            color:var(--ink);
+            background:#fbfcfa;
+            font-size:12px;
+        }
+
+        .table-search {
+            width:190px;
+        }
+
+        select:focus,
+        .table-search:focus {
+            border-color:var(--leaf);
+            box-shadow:0 0 0 3px rgba(44,105,88,.1);
+            background:#fff;
+        }
+
+        .print-button {
+            height:38px;
+            padding:0 15px;
+            border:0;
+            border-radius:6px;
+            color:#fff;
+            background:var(--deep);
+            font-size:12px;
+            font-weight:700;
+        }
+
+        .print-button:hover {
+            background:#173f35;
+        }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th {
+            padding:12px;
+            color:#657870;
+            background:#f4f7f4;
+            font-size:10px;
+            text-align:left;
+        }
+
+        td {
+            padding:14px 12px;
+            border-bottom:1px solid #eef2ee;
+            font-size:12px;
+        }
+
+        .student-id {
+            color:var(--leaf);
+            font-weight:700;
+        }
+
+        .status {
+            display:inline-block;
+            padding:5px 9px;
+            border-radius:15px;
+            font-size:10px;
+            font-weight:700;
+        }
+
+        .excellent {
+            color:#28714f;
+            background:#dff3e7;
+        }
+
+        .good {
+            color:#28714f;
+            background:#e8f4ed;
+        }
+
+        .attention {
+            color:#9a6811;
+            background:#fbefcf;
+        }
+
+        .risk {
+            color:#a33b3b;
+            background:#f8dddd;
+        }
+
+        .course-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:18px;
+        }
+
+        .course-row {
+            margin-bottom:17px;
+        }
+
+        .course-row:last-child {
+            margin-bottom:0;
+        }
+
+        .course-info {
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:7px;
+            color:#39564d;
+            font-size:11px;
+            font-weight:600;
+        }
+
+        .progress {
+            height:11px;
+            overflow:hidden;
+            background:#e9efed;
+            border-radius:10px;
+        }
+
+        .progress-bar {
+            height:100%;
+            background:var(--leaf);
+            border-radius:10px;
+        }
+
+        .report-summary {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:18px;
+        }
+
+        .summary-item {
+            padding:17px;
+            border:1px solid #edf1ed;
+            border-radius:7px;
+            background:#fbfcfa;
+        }
+
+        .summary-item span {
+            display:block;
+            margin-bottom:7px;
+            color:var(--muted);
+            font-size:11px;
+        }
+
+        .summary-item strong {
+            font-size:22px;
+        }
+
+        .footer {
+            display:flex;
+            justify-content:space-between;
+            padding-top:24px;
+            color:var(--muted);
+            font-size:11px;
+        }
+
+        @media(max-width:950px) {
+
+            .stats {
+                grid-template-columns:1fr 1fr;
+            }
+
+            .course-grid,
+            .report-summary {
+                grid-template-columns:1fr;
+            }
+        }
+
+        @media(max-width:800px) {
+
+            .shell {
+                display:block;
+            }
+
+            .sidebar {
+                min-height:auto;
+            }
+
+            .content {
+                padding:25px 18px;
+            }
+
+            .topbar {
+                padding:0 18px;
+            }
+
+            .panel-head {
+                align-items:flex-start;
+                flex-direction:column;
+            }
+
+            .controls {
+                width:100%;
+                flex-wrap:wrap;
+            }
+        }
+
+        @media(max-width:550px) {
+
+            .stats {
+                grid-template-columns:1fr;
+            }
+
+            .table-wrapper {
+                overflow-x:auto;
+            }
+
+            table {
+                min-width:750px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="shell">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="mark">S</span>
+            <span>Stūdent</span>
+        </div>
+
+        <nav class="nav">
+
+            <a href="dashboard.html">
+                <span>⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="students.html">
+                <span>♙</span>
+                <span>Students</span>
+            </a>
+
+            <a class="active" href="reports.html">
+                <span>▥</span>
+                <span>Reports</span>
+            </a>
+
+            <a href="settings.html">
+                <span>⚙</span>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-foot">
+
+            <a class="logout" href="login.html">
+                <span>↪</span>
+                <span>Log out</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+    <div class="workspace">
+
+        <header class="topbar">
+
+            <label class="global-search">
+                🔍
+                <input
+                    id="globalSearch"
+                    type="search"
+                    placeholder="Search reports..."
+                >
+            </label>
+
+            <div class="top-actions">
+
+                <div class="profile">
+                    <span class="avatar">A</span>
+                    <span>Admin</span>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="content">
+
+            <section class="heading">
+
+                <div>
+                    <h1>Reports</h1>
+                    <p>View student attendance and academic performance reports.</p>
+                </div>
+
+                <span class="heading-date">Academic Year 2026</span>
+
+            </section>
+
+            <section class="stats">
+
+                <div class="stat-card total">
+
+                    <div class="stat-icon">♙</div>
+
+                    <div class="stat-info">
+                        <strong>120</strong>
+                        <span>Total Students</span>
+                    </div>
+
+                </div>
+
+                <div class="stat-card active">
+
+                    <div class="stat-icon">🎓</div>
+
+                    <div class="stat-info">
+                        <strong>86%</strong>
+                        <span>Average Attendance</span>
+                    </div>
+
+                </div>
+
+                <div class="stat-card new">
+
+                    <div class="stat-icon">▥</div>
+
+                    <div class="stat-info">
+                        <strong>79%</strong>
+                        <span>Average Mark</span>
+                    </div>
+
+                </div>
+
+                <div class="stat-card inactive">
+
+                    <div class="stat-icon">♙×</div>
+
+                    <div class="stat-info">
+                        <strong>1</strong>
+                        <span>Students Needing Attention</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="panel">
+
+                <div class="panel-head">
+
+                    <div>
+                        <h2>Student Performance Report</h2>
+                        <p class="panel-description">
+                            Attendance and average marks of students.
+                        </p>
+                    </div>
+
+                    <div class="controls">
+
+                        <input
+                            class="table-search"
+                            id="studentSearch"
+                            type="search"
+                            placeholder="Search students..."
+                        >
+
+                        <select id="courseFilter">
+                            <option value="all">All Courses</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        </select>
+
+                        <button class="print-button" onclick="printReport()">
+                            Print Report
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Attendance</th>
+                                <th>Average Mark</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentTable">
+
+                            <tr>
+                                <td class="student-id">S001</td>
+                                <td>Aarav Sharma</td>
+                                <td>Computer Science</td>
+                                <td>94%</td>
+                                <td>88%</td>
+                                <td>
+                                    <span class="status excellent">Excellent</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="student-id">S002</td>
+                                <td>Diya Patel</td>
+                                <td>Information Technology</td>
+                                <td>91%</td>
+                                <td>84%</td>
+                                <td>
+                                    <span class="status good">Good</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="student-id">S003</td>
+                                <td>Rohan Mehta</td>
+                                <td>Electronics</td>
+                                <td>82%</td>
+                                <td>76%</td>
+                                <td>
+                                    <span class="status good">Good</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="student-id">S004</td>
+                                <td>Sneha Iyer</td>
+                                <td>Computer Science</td>
+                                <td>72%</td>
+                                <td>65%</td>
+                                <td>
+                                    <span class="status attention">Needs Attention</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="student-id">S005</td>
+                                <td>Karan Verma</td>
+                                <td>Mechanical Engineering</td>
+                                <td>89%</td>
+                                <td>81%</td>
+                                <td>
+                                    <span class="status good">Good</span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <div class="course-grid">
+
+                <section class="panel">
+
+                    <div class="panel-head">
+
+                        <div>
+                            <h2>Course-wise Performance</h2>
+                            <p class="panel-description">
+                                Average marks by course.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="course-row">
+
+                        <div class="course-info">
+                            <span>Computer Science</span>
+                            <span>77%</span>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width:77%;"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="course-row">
+
+                        <div class="course-info">
+                            <span>Information Technology</span>
+                            <span>84%</span>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width:84%;"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="course-row">
+
+                        <div class="course-info">
+                            <span>Electronics</span>
+                            <span>76%</span>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width:76%;"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="course-row">
+
+                        <div class="course-info">
+                            <span>Mechanical Engineering</span>
+                            <span>81%</span>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-bar" style="width:81%;"></div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="panel">
+
+                    <div class="panel-head">
+
+                        <div>
+                            <h2>Report Summary</h2>
+                            <p class="panel-description">
+                                Overall academic statistics.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="report-summary">
+
+                        <div class="summary-item">
+                            <span>Average Attendance</span>
+                            <strong>86%</strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Average Mark</span>
+                            <strong>79%</strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Pass Percentage</span>
+                            <strong>91%</strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Students Needing Attention</span>
+                            <strong>1</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <footer class="footer">
+                <span>© 2024 Student Management System. All rights reserved.</span>
+                <span>Version 1.0</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script>
+
+    function filterStudents() {
+
+        const search =
+            document.getElementById("studentSearch").value.toLowerCase();
+
+        const course =
+            document.getElementById("courseFilter").value;
+
+        const rows =
+            document.querySelectorAll("#studentTable tr");
+
+        rows.forEach(function(row) {
+
+            const text =
+                row.textContent.toLowerCase();
+
+            const rowCourse =
+                row.children[2].textContent;
+
+            const matchesSearch =
+                text.includes(search);
+
+            const matchesCourse =
+                course === "all" || rowCourse === course;
+
+            row.style.display =
+                matchesSearch && matchesCourse
+                    ? ""
+                    : "none";
+
+        });
+
+    }
+
+    document
+        .getElementById("studentSearch")
+        .addEventListener("input", filterStudents);
+
+    document
+        .getElementById("courseFilter")
+        .addEventListener("change", filterStudents);
+
+    function printReport() {
+
+        window.print();
+
+    }
+
+</script>
+
+</body>
+</html>
