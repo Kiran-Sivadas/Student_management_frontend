@@ -7,3 +7,5 @@ A frontend Student Management System developed using HTML, CSS and JavaScript.
 - Login
 - Dashboard
 - Reports
+
+Student Management System - Kiran Update
